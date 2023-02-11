@@ -11,5 +11,5 @@ set SPOTIFY_REDIRECT_URI=your_redirect_uri_here
 ) &
 (
   cd lavalink
-  ../java/jdk/bin/java.exe -jar Lavalink.jar
+  ../java/jdk/bin/java -jar Lavalink.jar
 )
