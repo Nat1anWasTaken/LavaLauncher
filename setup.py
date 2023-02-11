@@ -1,4 +1,5 @@
-from os import getenv, listdir, path, mkdir
+import shutil
+from os import getenv, listdir, path, mkdir, rename
 from os.path import isdir
 
 import jdk
@@ -11,11 +12,11 @@ def main():
 
     update_lava(repo)
 
-    java = get_java()
+    setup_lava()
+
+    get_java()
 
     get_lavalink()
-
-    pass
 
 
 def clone_lava() -> Repo:
@@ -33,6 +34,8 @@ def clone_lava() -> Repo:
             getenv("git_repo", "https://github.com/Nat1anWasTaken/Lava.git"), "./lava", branch="master"
         )
 
+    print("Lava cloned successfully!")
+
     return repo
 
 
@@ -43,8 +46,20 @@ def update_lava(repo: Repo):
 
     remote.pull()
 
+    print("Lava updated successfully!")
 
-def get_java() -> str:
+
+def setup_lava():
+    print("Setting up Lava...")
+
+    shutil.copyfile("default_configs/lavalink.json", "lava/configs/lavalink.json")
+
+    shutil.copyfile("default_configs/icons.json", "lava/configs/icons.json")
+
+    print("Lava setup successfully!")
+
+
+def get_java():
     print("Installing JDK...")
 
     if not isdir("./java"):
@@ -55,7 +70,10 @@ def get_java() -> str:
 
     for directory in listdir('./java'):
         if directory.startswith('jdk'):
-            return f"./java/{directory}/bin/java.exe"
+            rename(f"./java/{directory}", f"./java/jdk")
+            break
+
+    print("JDK installed successfully!")
 
 
 def get_lavalink():
@@ -73,6 +91,10 @@ def get_lavalink():
 
     with open("./lavalink/Lavalink.jar", 'wb') as f:
         f.write(jar.content)
+
+    shutil.copyfile("default_configs/application.yml", "lavalink/application.yml")
+
+    print("Lavalink installed successfully!")
 
 
 if __name__ == "__main__":
