@@ -15,7 +15,7 @@ def main():
 
     get_lavalink()
 
-    pass 
+    pass
 
 
 def clone_lava() -> Repo:
