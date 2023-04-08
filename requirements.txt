@@ -1,3 +1,5 @@
 GitPython
 install-jdk
 requests
+inquirer
+pyyaml
