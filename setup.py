@@ -23,7 +23,7 @@ def success(obj: Any):
     print(f"[\033[32m+\033[0m] {str(obj)}\n")
 
 
-def valid_token(token: str) -> bool:
+def valid_token(_, token: str) -> bool:
     response = requests.get("https://discord.com/api/v10/users/@me", headers={"Authorization": "Bot " + token})
 
     return response.status_code == 200
