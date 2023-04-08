@@ -100,7 +100,7 @@ def fill_secrets():
     except KeyboardInterrupt:
         env_file.close()
 
-        remove(".env")
+        remove("./lava/.env")
 
         raise KeyboardInterrupt
 
