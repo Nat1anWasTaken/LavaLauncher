@@ -47,7 +47,7 @@ def clone_lava() -> Repo:
     :return: The repo
     """
     try:
-        repo = Repo("./Lava")
+        repo = Repo("./lava")
 
     except NoSuchPathError:
         info("Cloning Lava...")
