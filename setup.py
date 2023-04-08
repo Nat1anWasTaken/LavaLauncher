@@ -38,7 +38,7 @@ def main():
 
     get_lavalink()
 
-    success("Setup complete!, Please run startup.sh to start Lava!")
+    success("Setup complete!")
 
 
 def clone_lava() -> Repo:
