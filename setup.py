@@ -23,6 +23,12 @@ def success(obj: Any):
     print(f"[\033[32m+\033[0m] {str(obj)}\n")
 
 
+def valid_token(token: str) -> bool:
+    response = requests.get("https://discord.com/api/v10/users/@me", headers={"Authorization": "Bot " + token})
+
+    return response.status_code == 200
+
+
 def main():
     repo = clone_lava()
 
@@ -84,7 +90,7 @@ def fill_secrets():
     info(".env file doesn't exists, creating one...")
 
     try:
-        token = text("TOKEN")
+        token = text("TOKEN", validate=valid_token)
 
         env_file.write(f"TOKEN={token}\n")
 
