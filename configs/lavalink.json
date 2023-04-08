@@ -2,11 +2,11 @@
     "nodes": [
         {
             "host": "0.0.0.0",
-            "port": 20019,
+            "port": 2333,
             "password": "hello",
             "name": "test",
             "region": "us",
             "ssl": false
         }
     ]
-}
+}}
