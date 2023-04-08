@@ -131,7 +131,7 @@ dmypy.json
 # Project specific
 lavalink
 java
-Lava
+lava
 
 # JetBrains IDE Configiration
 .idea/
