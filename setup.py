@@ -72,12 +72,12 @@ def update_lava(repo: Repo):
 
 
 def fill_secrets():
-    if path.isfile(".env"):
+    if path.isfile("./lava/.env"):
         warning(".env file already exists, skipping...")
 
         return
 
-    env_file = open(".env", "w", encoding="utf-8")
+    env_file = open("./lava/.env", "w", encoding="utf-8")
 
     env_file.truncate(0)
 

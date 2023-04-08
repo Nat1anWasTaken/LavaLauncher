@@ -7,7 +7,7 @@ python3 -m pip install -r lava/requirements.txt
 
 (
   cd lava
-  source ../.env && python3 main.py
+  python3 main.py
 ) & (
   cd lavalink
   ../java/jdk/bin/java -jar Lavalink.jar
