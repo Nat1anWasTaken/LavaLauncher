@@ -79,6 +79,8 @@ def fill_secrets():
 
     env_file = open(".env", "w", encoding="utf-8")
 
+    env_file.truncate(0)
+
     info(".env file doesn't exists, creating one...")
 
     try:
@@ -124,6 +126,8 @@ def set_ports():
 
         data["nodes"][0]["port"] = int(port)
 
+        f.truncate(0)
+
         f.seek(0)
 
         f.write(json.dumps(data, indent=4))
@@ -132,6 +136,8 @@ def set_ports():
         data = yaml.load(f, Loader=yaml.FullLoader)
 
         data["server"]["port"] = int(port)
+
+        f.truncate(0)
 
         f.seek(0)
 

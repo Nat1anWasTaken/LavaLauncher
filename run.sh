@@ -1,8 +1,9 @@
 #!/bin/bash
 pip install -r requirements.txt
-pip install -r lava/requirements.txt
 
 python3 setup.py
+
+pip install -r lava/requirements.txt
 
 source .env
 
