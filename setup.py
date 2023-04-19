@@ -26,7 +26,8 @@ def success(obj: Any):
 
 
 def valid_token(_, token: str) -> bool:
-    response = requests.get("https://discord.com/api/v10/users/@me", headers={"Authorization": "Bot " + token})
+    response = requests.get("https://discord.com/api/v10/users/@me",
+                            headers={"Authorization": "Bot " + token})
 
     return response.status_code == 200
 
@@ -90,7 +91,7 @@ def fill_secrets():
         return
 
     env_file = open("./lava/.env", "w", encoding="utf-8")
-    cache_file = open("./lava/.cache","w",encoding="utf-8")
+    cache_file = open("./lava/.cache", "w", encoding="utf-8")
 
     env_file.truncate(0)
     cache_file.truncate(0)
@@ -121,15 +122,17 @@ Enter the URL you were redirected to""")
 
             code = parts[1]
 
-            headers = {'Authorization': 'Basic ' + base64.b64encode((spotify_client_id + ':' + spotify_client_secret).encode('ascii')).decode('ascii'),'content-type': 'application/x-www-form-urlencoded'}
+            headers = {'Authorization': 'Basic ' + base64.b64encode((spotify_client_id + ':' + spotify_client_secret).encode(
+                'ascii')).decode('ascii'), 'content-type': 'application/x-www-form-urlencoded'}
 
             data = {
-                    'grant_type': 'authorization_code',
-                    'code': code,
-                    'redirect_uri': spotify_redirect_uri,
-                }
+                'grant_type': 'authorization_code',
+                'code': code,
+                'redirect_uri': spotify_redirect_uri,
+            }
 
-            r = requests.post(url="https://accounts.spotify.com/api/token",headers=headers, data=data)
+            r = requests.post(
+                url="https://accounts.spotify.com/api/token", headers=headers, data=data)
 
             if r.status_code == 200:
                 cache_file.write(str(r.json()))
@@ -230,7 +233,8 @@ def get_lavalink():
     if not path.isdir('./lavalink'):
         mkdir('./lavalink')
 
-    data = requests.get("https://api.github.com/repos/freyacodes/Lavalink/releases/latest").json()
+    data = requests.get(
+        "https://api.github.com/repos/freyacodes/Lavalink/releases/latest").json()
 
     jar = requests.get(data["assets"][0]["browser_download_url"])
 
