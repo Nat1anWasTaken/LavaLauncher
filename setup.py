@@ -9,6 +9,8 @@ import requests
 import yaml
 from git import Repo, NoSuchPathError
 from inquirer import text, confirm
+from requests.exceptions import HTTPError
+import base64
 
 
 def info(obj: Any):
@@ -82,12 +84,19 @@ def fill_secrets():
         warning(".env file already exists, skipping...")
 
         return
+    if path.isfile("./lava/.cache"):
+        warning(".cache file already exists, skipping...")
+
+        return
 
     env_file = open("./lava/.env", "w", encoding="utf-8")
+    cache_file = open("./lava/.cache","w",encoding="utf-8")
 
     env_file.truncate(0)
+    cache_file.truncate(0)
 
     info(".env file doesn't exists, creating one...")
+    info(".cache file doesn't exists, creating one...")
 
     try:
         token = text("TOKEN", validate=valid_token)
@@ -101,16 +110,47 @@ def fill_secrets():
             spotify_client_secret = text("Spotify Client Secret")
             env_file.write(f"SPOTIFY_CLIENT_SECRET={spotify_client_secret}\n")
 
+            spotify_redirect_uri = text("SPOTIPY Redirect Uri")
+            env_file.write(f"SPOTIPY_REDIRECT_URI={spotify_redirect_uri}\n")
+
+            url = text(message=f"""
+Go to the following URL: https://accounts.spotify.com/authorize?client_id={spotify_client_id}&response_type=code&redirect_uri={spotify_redirect_uri}
+Enter the URL you were redirected to""")
+
+            parts = url.split('code=')
+
+            code = parts[1]
+
+            headers = {'Authorization': 'Basic ' + base64.b64encode((spotify_client_id + ':' + spotify_client_secret).encode('ascii')).decode('ascii'),'content-type': 'application/x-www-form-urlencoded'}
+
+            data = {
+                    'grant_type': 'authorization_code',
+                    'code': code,
+                    'redirect_uri': spotify_redirect_uri,
+                }
+
+            r = requests.post(url="https://accounts.spotify.com/api/token",headers=headers, data=data)
+
+            if r.status_code == 200:
+                cache_file.write(str(r.json()))
+            else:
+                raise HTTPError("Invalid authorization code.")
+
         env_file.close()
+        cache_file.close()
 
     except KeyboardInterrupt:
         env_file.close()
+        cache_file.close()
 
         remove("./lava/.env")
+        remove("./lava/.cache")
 
         raise KeyboardInterrupt
 
     success(".env file created successfully!")
+
+    success("Wrote Spotify token to .cache file created successfully!")
 
     return
 
