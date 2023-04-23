@@ -1,3 +1,7 @@
 import os
+import sys
 
-os.system("./run.sh")
+if sys.platform == "win32":
+    os.system(".\\run.bat")
+else:
+    os.system("./run.sh")
