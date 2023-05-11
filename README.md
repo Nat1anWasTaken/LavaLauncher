@@ -124,7 +124,7 @@
    `[?] SPOTIFY_REDIRECT_URI:`
    請輸入 `http://localhost/`
 
-   接著，LavaLauncher會跳出一個連結，請點擊它並授權
+   接著，LavaLauncher 會跳出一個連結，請點擊它並授權
    授權完成後，顯示 `http://localhost/ 拒絕連線` 是正常的，此時你應該將瀏覽器分頁的連結複製下來，並貼到 LavaLauncher 的輸入框中
 
 4. 運行機器人
