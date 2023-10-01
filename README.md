@@ -96,19 +96,14 @@
    ```
 
 2. 運行腳本
-
-    ```bash
-    cd LavaLauncher
-    ./run.sh
-    ```
-   或是
+3. 
    ```bash
-   python3 run.py
+   python run.py
    ```
 
-   > 如果你遇到了 Permission Error，試著 `sudo chmod +x run.sh`
+   > 如果你遇到了 Permission Error，請打開命令提示字元後輸入 `powershell Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
 
-3. 輸入資料
+4. 輸入資料
 
    LavaLauncher 的第一次啟動可能需要一點時間，請耐心等待
    在啟動完成後，你會看到幾個彈出來的問題
@@ -128,7 +123,7 @@
    接著，LavaLauncher會跳出一個連結，請點擊它並授權
    授權完成後，顯示 `http://localhost/ 拒絕連線` 是正常的，此時你應該將瀏覽器分頁的連結複製下來，並貼到 LavaLauncher 的輸入框中
 
-4. 運行機器人
+5. 運行機器人
 
    LavaLauncher 會自動安裝所需的套件，並啟動機器人
    如果你看到 `Logged in as` 這行字，恭喜你，你已經成功啟動了 Lava
