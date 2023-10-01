@@ -8,9 +8,10 @@
 
 - 基本英文 / 中文閱讀能力
 - Python 3.10+
+- [Git Bash](https://git-scm.com/)
 
 註：這個腳本是設計在 Linux 中運行，在 Windows 中，你可以嘗試使用
-[Git Bash](https://git-scm.com/) 或 [Windows Subsystem for Linux](https://learn.microsoft.com/zh-tw/windows/wsl/install)
+[Windows Subsystem for Linux](https://learn.microsoft.com/zh-tw/windows/wsl/install)
 
 ## 如何使用
 
