@@ -6,11 +6,18 @@ from typing import Any
 
 import jdk
 import requests
+import urllib.parse
 import yaml
 from git import Repo, NoSuchPathError
 from inquirer import text, confirm
 from requests.exceptions import HTTPError
 import base64
+
+
+def short_url(url: str):
+    encoded_url = urllib.parse.quote(url, safe="")
+    response = requests.get(f"https://ulvis.net/API/write/get?url={encoded_url}")
+    return response.json()["data"]["url"]
 
 
 def info(obj: Any):
@@ -26,8 +33,10 @@ def success(obj: Any):
 
 
 def valid_token(_, token: str) -> bool:
-    response = requests.get("https://discord.com/api/v10/users/@me",
-                            headers={"Authorization": "Bot " + token})
+    response = requests.get(
+        "https://discord.com/api/v10/users/@me",
+        headers={"Authorization": "Bot " + token},
+    )
 
     return response.status_code == 200
 
@@ -62,7 +71,9 @@ def clone_lava() -> Repo:
         info("Cloning Lava...")
 
         repo = Repo.clone_from(
-            getenv("git_repo", "https://github.com/Nat1anWasTaken/Lava.git"), "./lava", branch="master"
+            getenv("git_repo", "https://github.com/Nat1anWasTaken/Lava.git"),
+            "./lava",
+            branch="master",
         )
 
     success("Lava cloned successfully!")
@@ -114,25 +125,37 @@ def fill_secrets():
             spotify_redirect_uri = text("SPOTIPY Redirect Uri")
             env_file.write(f"SPOTIPY_REDIRECT_URI={spotify_redirect_uri}\n")
 
-            url = text(message=f"""
-Go to the following URL: https://accounts.spotify.com/authorize?client_id={spotify_client_id}&response_type=code&redirect_uri={spotify_redirect_uri}
-Enter the URL you were redirected to""")
+            shorted_url = short_url(
+                f"https://accounts.spotify.com/authorize?client_id={spotify_client_id}&response_type=code&redirect_uri={spotify_redirect_uri}"
+            )
 
-            parts = url.split('code=')
+            url = text(
+                message=f"""
+Go to the following URL: {shorted_url}
+Enter the URL you were redirected to"""
+            )
+
+            parts = url.split("code=")
 
             code = parts[1]
 
-            headers = {'Authorization': 'Basic ' + base64.b64encode((spotify_client_id + ':' + spotify_client_secret).encode(
-                'ascii')).decode('ascii'), 'content-type': 'application/x-www-form-urlencoded'}
+            headers = {
+                "Authorization": "Basic "
+                + base64.b64encode(
+                    (spotify_client_id + ":" + spotify_client_secret).encode("ascii")
+                ).decode("ascii"),
+                "content-type": "application/x-www-form-urlencoded",
+            }
 
             data = {
-                'grant_type': 'authorization_code',
-                'code': code,
-                'redirect_uri': spotify_redirect_uri,
+                "grant_type": "authorization_code",
+                "code": code,
+                "redirect_uri": spotify_redirect_uri,
             }
 
             r = requests.post(
-                url="https://accounts.spotify.com/api/token", headers=headers, data=data)
+                url="https://accounts.spotify.com/api/token", headers=headers, data=data
+            )
 
             if r.status_code == 200:
                 cache_file.write(str(r.json()))
@@ -159,7 +182,9 @@ Enter the URL you were redirected to""")
 
 
 def set_ports():
-    if path.isfile("lava/configs/lavalink.json") and path.isfile("lavalink/application.yml"):
+    if path.isfile("lava/configs/lavalink.json") and path.isfile(
+        "lavalink/application.yml"
+    ):
         warning("lavalink.json and application.yml file already exists, skipping...")
 
         return
@@ -167,7 +192,7 @@ def set_ports():
     port = text(
         "Please enter the port for lavalink",
         default="2333",
-        validate=lambda _, x: x.isdigit()
+        validate=lambda _, x: x.isdigit(),
     )
 
     with open("configs/lavalink.json", "r+", encoding="utf-8") as f:
@@ -216,8 +241,8 @@ def get_java():
         except StopIteration:
             pass
 
-    for directory in listdir('./java'):
-        if directory.startswith('jdk'):
+    for directory in listdir("./java"):
+        if directory.startswith("jdk"):
             rename(f"./java/{directory}", f"./java/jdk")
             break
 
@@ -230,15 +255,16 @@ def get_lavalink():
     if path.isfile("./lavalink/Lavalink.jar"):
         return
 
-    if not path.isdir('./lavalink'):
-        mkdir('./lavalink')
+    if not path.isdir("./lavalink"):
+        mkdir("./lavalink")
 
     data = requests.get(
-        "https://api.github.com/repos/freyacodes/Lavalink/releases/latest").json()
+        "https://api.github.com/repos/freyacodes/Lavalink/releases/latest"
+    ).json()
 
     jar = requests.get(data["assets"][0]["browser_download_url"])
 
-    with open("./lavalink/Lavalink.jar", 'wb') as f:
+    with open("./lavalink/Lavalink.jar", "wb") as f:
         f.write(jar.content)
 
     shutil.copyfile("configs/application.yml", "lavalink/application.yml")
