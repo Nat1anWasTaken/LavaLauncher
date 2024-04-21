@@ -4,6 +4,12 @@
 
 你可以在 [這裡](https://github.com/Nat1anWasTaken/Lava) 找到 Lava 的主要 Repository
 
+## ⚠️ 已棄用 ⚠️
+
+此專案已在 2024/4/22 棄用，
+目前 Lava 的主要架設方式已改為使用 **Docker** 或是 **Docker Compose**
+請參考主要 Repository 的 [README.md](https://github.com/Nat1anWasTaken/Lava?tab=readme-ov-file#開始使用)
+
 ## 需求
 
 - 基本英文 / 中文閱讀能力
